@@ -6,6 +6,7 @@
 from setuptools import setup, find_packages
 import sys, os
 from Cython.Build import cythonize
+from setuptools.extension import Extension
 
 setup(
   name = 'Hello world app',
@@ -76,6 +77,6 @@ setup(
     entry_points={
         'console_scripts':
             ['icc.linkgrammar=icc.linkgrammar:main']
-    }
-    ext_modules = cythonize("src/cython/cplinkgrammar.pyx"),
+    },
+    ext_modules = cythonize("src/icc/linkgrammar/cplinkgrammar.pyx"),
 )
