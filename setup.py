@@ -45,7 +45,7 @@ dependency_links = [
 setup(
     name='icc.linkgrammar',
     version=version,
-    description="A minimalist grammar checking module.",
+    description="A minimalist grammar checking module",
     long_description=README + '\n\n' + NEWS,
     # Get classifiers from http://pypi.python.org/pypi?%3Aaction=list_classifiers
     # classifiers=[c.strip() for c in """
