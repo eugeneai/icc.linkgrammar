@@ -161,3 +161,9 @@ cdef class LinkGrammar:
             parse_options_set_max_parse_time(self._opts, time)
         def __get__(self):
             return parse_options_get_max_parse_time(self._opts)
+
+    property verbosity:
+        def __set__(self, int lim):
+            parse_options_set_verbosity(self._opts, lim)
+        def __get__(self):
+            return parse_options_get_verbosity(self._opts)

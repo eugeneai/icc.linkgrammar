@@ -76,3 +76,10 @@ class test_engine:
         self.p.max_linkages=1
         assert self.p.linkage(0)
         assert self.p.max_linkages==1
+
+
+    def text_linkage_set_option_verbosity(self):
+        self.p.parse("Я иду по улице.")
+        self.p.verbosity=1
+        assert self.p.linkage(0)
+        assert self.p.verbosity==1
