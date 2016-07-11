@@ -1,6 +1,6 @@
 .PHONY: env dev develop install test edit \
     py pot init-ru update-ru comp-cat \
-    upd-cat setup
+    upd-cat setup test
 
 TOP_DIR="/home/eugeneai/Development/codes/NLP/workprog/tmp/link-grammar"
 
@@ -37,15 +37,8 @@ install: env comp-cat
 edit:
 	cd src && emacs
 
-test: adjust-ini
-	@ip a | grep 2001 || true
-	@ip a | grep 172. || true
-	@echo "================================================================"
-	@echo "Point Your browser to http://[::1]:8080 or http://127.0.0.1:8080"
-	@echo "================================================================"
-	$(VB)/pserve $(INI).ini --reload
-	#cd src && $(PYTHON) app.py
-
+test: setup
+	$(PYTHON) setup.py test
 #dev-....:
 #	make -C ../...... dev
 
