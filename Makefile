@@ -1,6 +1,6 @@
 .PHONY: env dev develop install test edit \
     py pot init-ru update-ru comp-cat \
-    upd-cat setup test
+    upd-cat setup test setup-requs tests
 
 TOP_DIR="/home/eugeneai/Development/codes/NLP/workprog/tmp/link-grammar"
 
@@ -27,7 +27,7 @@ setup:
 	$(PYTHON) setup.py build_ext -L$(LG_LIB_DIR) -R$(LG_LIB_DIR) -I$(LG_HEADERS)
 	$(PYTHON) setup.py develop
 
-dev:	pre-dev setup # upd-cat
+dev:	pre-dev setup-requs setup # upd-cat
 
 develop: dev
 
@@ -37,10 +37,16 @@ install: env comp-cat
 edit:
 	cd src && emacs
 
+setup-requs: requirements.txt
+	pip install -r requirements.txt
+
 test: setup
-	$(PYTHON) setup.py test
+	nosetests -w src/icc/tests
+#	$(PYTHON) setup.py test
 #dev-....:
 #	make -C ../...... dev
+
+tests:	test
 
 py:
 	$(PYTHON)

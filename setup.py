@@ -22,6 +22,7 @@ install_requires = [
     # Packages with fixed versions
     # "<package1>==0.1",
     # "<package2>==0.3.0",
+    "nose", "coverage"   # Put it here.
 ]
 
 tests_requires = [
@@ -94,5 +95,5 @@ setup(
     },
     ext_modules = cythonize(ext_modules),
     test_suite = 'nose.collector',
-    setup_requires=['nose>=1.0','coverage']
+    setup_requires=['nose>=1.0','Cython','coverage']
 )
