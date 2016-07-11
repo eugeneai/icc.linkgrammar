@@ -1,6 +1,7 @@
 .PHONY: env dev develop install test edit \
-    py pot init-ru update-ru comp-cat \
-    upd-cat setup test setup-requs tests
+	py pot init-ru update-ru comp-cat \
+	upd-cat setup test setup-requs tests \
+	run-tests gdb-test
 
 TOP_DIR="/home/eugeneai/Development/codes/NLP/workprog/tmp/link-grammar"
 
@@ -40,13 +41,15 @@ edit:
 setup-requs: requirements.txt
 	pip install -r requirements.txt
 
-test: setup
+run-tests:
 	nosetests -w src/icc/tests
-#	$(PYTHON) setup.py test
-#dev-....:
-#	make -C ../...... dev
 
-tests:	test
+tests:	run-tests
+
+test:	setup run-tests
+
+gdb-test: setup
+	gdb --args $(PYTHON) $(VB)/nosetests -w src/icc/tests
 
 py:
 	$(PYTHON)
