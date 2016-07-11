@@ -42,6 +42,15 @@ dependency_links = [
     #'https://github.com/<user2>/<package2>/archive/master.zip#egg=<package2>-0.3.0',
 ]
 
+#Cython extension
+
+ext_modules=[
+    Extension("icc.linkgrammar.cplinkgrammar",
+              sources=["src/icc/linkgrammar/cplinkgrammar.pyx"],
+              libraries=["m"] # Unix-like specific
+    )
+]
+
 setup(
     name='icc.linkgrammar',
     version=version,
@@ -78,5 +87,5 @@ setup(
         'console_scripts':
             ['icc.linkgrammar=icc.linkgrammar:main']
     },
-    ext_modules = cythonize("src/icc/linkgrammar/cplinkgrammar.pyx"),
+    ext_modules = cythonize(ext_modules),
 )
