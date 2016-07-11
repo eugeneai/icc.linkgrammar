@@ -64,3 +64,15 @@ class test_engine:
         diag=self.p.diagram()
         print (diag)
         assert diag
+
+    def text_linkage_set_option_parse_time(self):
+        self.p.parse("Я иду по улице.")
+        self.p.parse_time=10
+        assert self.p.linkage(0)
+        assert self.p.parse_time==10
+
+    def text_linkage_set_option_max_linkages(self):
+        self.p.parse("Я иду по улице.")
+        self.p.max_linkages=1
+        assert self.p.linkage(0)
+        assert self.p.max_linkages==1

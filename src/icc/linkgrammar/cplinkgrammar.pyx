@@ -90,6 +90,9 @@ cdef class LinkGrammar:
 
     def clean(self):
         self.sent_delete()
+        # Reset options to default
+        parse_options_delete(self._opts)
+        self._opts=parse_options_create()
 
     def __dealloc__(self):
         self.dict_delete()
@@ -143,3 +146,15 @@ cdef class LinkGrammar:
         u=_u(s)
         linkage_free_diagram(s)
         return u
+
+    property linkage_limit:
+        def __set__(self, int lim):
+            parse_options_set_linkage_limit(self._opts, lim)
+        def __get__(self):
+            return parse_options_get_linkage_limit(self._opts)
+
+    property max_parse_time:
+        def __set__(self, int time):
+            parse_options_set_max_parse_time(self._opts, time)
+        def __get__(self):
+            return parse_options_get_max_parse_time(self._opts)
