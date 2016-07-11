@@ -4,17 +4,17 @@ class test_engine:
     def setUp(self):
         """
         """
-        print ("setup")
+        self.p=lg.LinkGrammar("ru")
 
     def tearDown(self):
-        print ("teardown")
+        del self.p
 
-    def test_running(self):
+    def test_version(self):
         """
         """
-        print ("test")
+        assert self.p.version.startswith("link-grammar")
 
-    def test_running2(self):
+    def test_dictionary(self):
         """
         """
-        print ("test2")
+        assert self.p.dictionary=="ru"
