@@ -10,6 +10,7 @@ class test_engine:
         self.p=parser
 
     def tearDown(self):
+        self.p.clean()
         del self.p
 
     def test_version(self):
@@ -48,16 +49,11 @@ class test_engine:
 
     def test_linkage_access3(self):
         self.p.parse("Я иду по улице.")
-        assert self.p.linkage(0)!=None
+        rc=self.p.linkage(0)
+        print ("RC:", rc)
+        assert rc
 
-    @raises(RuntimeError)
-    def test_linkage_access_failing(self):
+    def test_linkage_access_multi(self):
         self.p.parse("Я иду по улице.")
         l1=self.p.linkage(0)
-        l2=self.p.linkage(1)
-
-    def test_linkage_access_success(self):
-        self.p.parse("Я иду по улице.")
-        l1=self.p.linkage(0)
-        del l1
         l2=self.p.linkage(1)

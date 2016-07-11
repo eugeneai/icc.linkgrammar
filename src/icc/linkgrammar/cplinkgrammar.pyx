@@ -21,21 +21,11 @@ cdef extern from "Python.h":
     object PyObject_CallObject(object callable_object, object args)
     int PyObject_SetAttrString(object o, char *attr_name, object v)
 
-
 cdef char * _s(o):
     return PyUnicode_AsUTF8(o)
 
 cdef _u(const char * s):
     return PyUnicode_FromString(s)
-
-class LinkageItem:
-    def __init__(self, engine, index):
-        self.engine=engine
-        self.index=index
-
-    def __del__(self):
-        self.engine.release_linkage(self.index)
-        del self.engine
 
 cdef class LinkGrammar:
     """Represents link grammar.
@@ -44,7 +34,7 @@ cdef class LinkGrammar:
     cdef Sentence _sent
     cdef Parse_Options _opts;
     cdef Dictionary _dict;
-    cdef int _idx;
+    cdef Linkage _linkage;
 
     def __cinit__(self):
         """Initializes class with
@@ -56,7 +46,7 @@ cdef class LinkGrammar:
         if self._opts==NULL:
             raise RuntimeError("cannot create options")
         self._dict=NULL
-        self._idx=-1;
+        self._linkage=NULL;
 
     def __init__(self, dictionary="en"):
         self._dictionary=_s(dictionary)
@@ -81,6 +71,7 @@ cdef class LinkGrammar:
         return 1
 
     cdef sent_delete(self):
+        self.release_linkage()
         if self._sent!=NULL:
             sentence_delete(self._sent)
             self._sent=NULL
@@ -92,13 +83,15 @@ cdef class LinkGrammar:
                 raise RuntimeError("cannot create a dictionary")
 
     cdef dict_delete(self):
+        self.sent_delete()
         if self._dict!=NULL:
             dictionary_delete(self._dict)
             self._dict=NULL
 
-    def __dealloc__(self):
-        #print ("----- Deallocation!!!! ----")
+    def clean(self):
         self.sent_delete()
+
+    def __dealloc__(self):
         self.dict_delete()
         parse_options_delete(self._opts)
         self._opts=NULL
@@ -117,23 +110,24 @@ cdef class LinkGrammar:
         self.check_sent()
         return sentence_num_valid_linkages(self._sent)
 
-    def linkage(self, LinkIdx num):
+    cdef bool linkage_prep(self, LinkageIdx num) except *:
         self.check_sent()
+        if self.num_linkages==0:
+            return 0
+        self.check_idx(num)
+        self.release_linkage()
+        self._linkage=linkage_create(num, self._sent, self._opts)
+        return 1
+
+    cdef check_idx(self, LinkageIdx num):
         nl=self.num_linkages
-        if nl==0:
-            return None
         if <int> num<0 or num>nl:
             raise IndexError("wrong linkage index")
-        if self._idx!=-1:
-            raise RuntimeError("release previously used linkage")
-        self._idx = <int> num
-        return LinkageItem(self, num)
 
-    def release_linkage(self, LinkageIdx num):
-        if self._idx == <int> num:
-            self._idx = -1
-        else:
-            raise ValueError("wrong linkage release")
+    cdef release_linkage(self):
+        if self._linkage != NULL:
+            linkage_delete(self._linkage)
+            self._linkage=NULL
 
-cdef simple_test():
-    print (linkgrammar_get_version())
+    def linkage(self, num):
+        return self.linkage_prep(num)
