@@ -5,5 +5,11 @@ import cplinkgrammar as lg
 
 def main():
     print ("Hello World")
-    lg.test()
+    g=lg.LinkGrammar("ru")
+    print (g.version)
+    print (g.dictionary)
+
+
+if __name__=="__main__":
+    main()
     quit()
