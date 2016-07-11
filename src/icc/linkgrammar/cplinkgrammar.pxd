@@ -1,3 +1,4 @@
+# cython: language_level=3
 # Declaration of link-grammar functions.
 cdef extern from "link-grammar/link-includes.h":
     ctypedef struct Dictionary_s :
