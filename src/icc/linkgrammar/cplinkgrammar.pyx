@@ -25,7 +25,10 @@ cdef char * _s(o):
     return PyUnicode_AsUTF8(o)
 
 cdef _u(const char * s):
-    return PyUnicode_FromString(s)
+    if s!=NULL:
+        return PyUnicode_FromString(s)
+    else:
+        return u"<NULL>"
 
 cdef class LinkGrammar:
     """Represents link grammar.
@@ -138,7 +141,7 @@ cdef class LinkGrammar:
             raise RuntimeError("cannot create linkage")
         return rc
 
-    def diagram(self, num=None, bool display_walls=1, size_t screen_width=80):
+    def diagram(self, num=None, bool display_walls=1, size_t screen_width=128):
         cdef char * s
         if num!=None:
             self.linkage(num)
