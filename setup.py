@@ -93,4 +93,6 @@ setup(
             ['icc.linkgrammar=icc.linkgrammar:main']
     },
     ext_modules = cythonize(ext_modules),
+    test_suite = 'nose.collector',
+    setup_requires=['nose>=1.0']
 )
