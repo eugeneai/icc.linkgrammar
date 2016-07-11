@@ -44,10 +44,17 @@ dependency_links = [
 
 #Cython extension
 
+TOP_DIR="/home/eugeneai/Development/codes/NLP/workprog/tmp/link-grammar"
+LG_DIR="link-grammar"
+LG_LIBS=os.path.join(TOP_DIR,LG_DIR,".libs")
+LG_HEADERS=os.path.join(TOP_DIR)
+
 ext_modules=[
     Extension("icc.linkgrammar.cplinkgrammar",
               sources=["src/icc/linkgrammar/cplinkgrammar.pyx"],
-              libraries=["m"] # Unix-like specific
+              libraries=["link-grammar"],
+              include_dirs = [LG_HEADERS],
+              library_dirs = [LG_LIBS]
     )
 ]
 
