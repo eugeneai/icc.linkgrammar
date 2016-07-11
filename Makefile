@@ -1,6 +1,8 @@
 .PHONY: env dev develop install test edit \
     py pot init-ru update-ru comp-cat \
-    upd-cat
+    upd-cat setup
+
+TOP_DIR="/home/eugeneai/Development/codes/NLP/workprog/tmp/link-grammar"
 
 LPYTHON=python3
 V=$(PWD)/../$(LPYTHON)
@@ -10,15 +12,22 @@ ROOT=$(PWD)
 #INI=icc.linkgrammar
 #LCAT=src/icc/linkgrammar/locale/
 
+LG_DIR="link-grammar"
+LG_LIB_DIR=$(TOP_DIR)/$(LG_DIR)/.libs
+LG_HEADERS=$(TOP_DIR)
+
 env:
 	[ -d $(V) ] || virtualenv  $(V)
 	$(VB)/easy_install --upgrade pip
 
 pre-dev:env #dev-....
 	$(VB)/easy_install pip setuptools
+
+setup:
+	$(PYTHON) setup.py build_ext -L$(LG_LIB_DIR) -R$(LG_LIB_DIR) -I$(LG_HEADERS)
 	$(PYTHON) setup.py develop
 
-dev:	pre-dev # upd-cat
+dev:	pre-dev setup # upd-cat
 
 develop: dev
 

@@ -8,10 +8,6 @@ import sys, os
 from Cython.Build import cythonize
 from setuptools.extension import Extension
 
-setup(
-  name = 'Hello world app',
-)
-
 here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.rst')).read()
 NEWS = open(os.path.join(here, 'NEWS.rst')).read()
@@ -46,15 +42,17 @@ dependency_links = [
 
 TOP_DIR="/home/eugeneai/Development/codes/NLP/workprog/tmp/link-grammar"
 LG_DIR="link-grammar"
-LG_LIBS=os.path.join(TOP_DIR,LG_DIR,".libs")
+LG_LIB_DIR=os.path.join(TOP_DIR,LG_DIR,".libs")
 LG_HEADERS=os.path.join(TOP_DIR)
 
 ext_modules=[
     Extension("icc.linkgrammar.cplinkgrammar",
               sources=["src/icc/linkgrammar/cplinkgrammar.pyx"],
               libraries=["link-grammar"],
-              include_dirs = [LG_HEADERS],
-              library_dirs = [LG_LIBS]
+#              include_dirs = [LG_HEADERS],
+#              library_dirs = [LG_LIB_DIR],
+              # extra_link_args=['-static']
+#              extra_link_args = [os.path.join(LG_LIB_DIR,'liblink-grammar.a')]
     )
 ]
 
