@@ -55,5 +55,12 @@ class test_engine:
 
     def test_linkage_access_multi(self):
         self.p.parse("Я иду по улице.")
-        l1=self.p.linkage(0)
-        l2=self.p.linkage(1)
+        assert self.p.linkage(0)
+        assert self.p.linkage(1)
+
+    def test_linkage_print_diagram(self):
+        self.p.parse("Я иду по улице.")
+        assert self.p.linkage(0)
+        diag=self.p.diagram()
+        print (diag)
+        assert diag

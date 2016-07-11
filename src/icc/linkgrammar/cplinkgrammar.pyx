@@ -129,5 +129,17 @@ cdef class LinkGrammar:
             linkage_delete(self._linkage)
             self._linkage=NULL
 
-    def linkage(self, num):
-        return self.linkage_prep(num)
+    def linkage(self, LinkageIdx num, raise_exception=False):
+        rc = self.linkage_prep(num)
+        if not rc and raise_exception:
+            raise RuntimeError("cannot create linkage")
+        return rc
+
+    def diagram(self, num=None, bool display_walls=1, size_t screen_width=80):
+        cdef char * s
+        if num!=None:
+            self.linkage(num)
+        s=linkage_print_diagram(self._linkage, display_walls, screen_width)
+        u=_u(s)
+        linkage_free_diagram(s)
+        return u
