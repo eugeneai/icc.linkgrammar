@@ -38,6 +38,7 @@ cdef class LinkGrammar:
     cdef Parse_Options _opts;
     cdef Dictionary _dict;
     cdef Linkage _linkage;
+    cdef bool _panic_mode;
 
     def __cinit__(self):
         """Initializes class with
@@ -50,6 +51,7 @@ cdef class LinkGrammar:
             raise RuntimeError("cannot create options")
         self._dict=NULL
         self._linkage=NULL;
+        self._panic_mode=0;
 
     def __init__(self, dictionary="en"):
         self._dictionary=_s(dictionary)
@@ -151,19 +153,148 @@ cdef class LinkGrammar:
         return u
 
     property linkage_limit:
-        def __set__(self, int lim):
-            parse_options_set_linkage_limit(self._opts, lim)
+        def __set__(self, int value):
+            parse_options_set_linkage_limit(self._opts, value)
         def __get__(self):
             return parse_options_get_linkage_limit(self._opts)
 
     property max_parse_time:
-        def __set__(self, int time):
-            parse_options_set_max_parse_time(self._opts, time)
+        def __set__(self, int value):
+            parse_options_set_max_parse_time(self._opts, value)
         def __get__(self):
             return parse_options_get_max_parse_time(self._opts)
 
     property verbosity:
-        def __set__(self, int lim):
-            parse_options_set_verbosity(self._opts, lim)
+        def __set__(self, int value):
+            parse_options_set_verbosity(self._opts, value)
         def __get__(self):
             return parse_options_get_verbosity(self._opts)
+
+    property debug:
+        def __set__(self, name ):
+            parse_options_set_debug(self._opts, _s(name))
+        def __get__(self):
+            return _u(parse_options_get_debug(self._opts))
+
+    property test:
+        def __set__(self, name ):
+            parse_options_set_test(self._opts, _s(name))
+        def __get__(self):
+            return _u(parse_options_get_test(self._opts))
+
+
+    property disjunct_cost:
+        def __set__(self, double value):
+            parse_options_set_disjunct_cost(self._opts, value)
+        def __get__(self):
+            return parse_options_get_disjunct_cost(self._opts)
+
+    property min_null_count:
+        def __set__(self, int value):
+            parse_options_set_min_null_count(self._opts, value)
+        def __get__(self):
+            return parse_options_get_min_null_count(self._opts)
+
+    property max_null_count:
+        def __set__(self, int value):
+            parse_options_set_max_null_count(self._opts, value)
+        def __get__(self):
+            return parse_options_get_max_null_count(self._opts)
+
+    property islands_ok:
+        def __set__(self, bool value):
+            parse_options_set_islands_ok(self._opts, value)
+        def __get__(self):
+            return parse_options_get_islands_ok(self._opts)
+
+    property use_sat_parse:
+        def __set__(self, bool value):
+            parse_options_set_use_sat_parser(self._opts, value)
+        def __get__(self):
+            return parse_options_get_use_sat_parser(self._opts)
+
+    property use_viterbi:
+        def __set__(self, bool value):
+            parse_options_set_use_viterbi(self._opts, value)
+        def __get__(self):
+            return parse_options_get_use_viterbi(self._opts)
+
+    property spell_guess:
+        def __set__(self, int value):
+            parse_options_set_spell_guess(self._opts, value)
+        def __get__(self):
+            return parse_options_get_spell_guess(self._opts)
+
+    property short_length:
+        def __set__(self, int value):
+            parse_options_set_short_length(self._opts, value)
+        def __get__(self):
+            return parse_options_get_short_length(self._opts)
+
+    property max_memory:
+        def __set__(self, int value):
+            parse_options_set_max_memory(self._opts, value)
+        def __get__(self):
+            return parse_options_get_max_memory(self._opts)
+
+    property timer_expired:
+        def __get__(self):
+            return parse_options_timer_expired(self._opts)
+
+    property memory_exhausted:
+        def __get__(self):
+            return parse_options_memory_exhausted(self._opts)
+
+    property resources_exhausted:
+        def __get__(self):
+            return parse_options_resources_exhausted(self._opts)
+
+    property use_cluster_disjuncts:
+        def __set__(self, bool value):
+            parse_options_set_use_cluster_disjuncts(self._opts, value)
+        def __get__(self):
+            return parse_options_get_use_cluster_disjuncts(self._opts)
+
+    property all_short_connectors:
+        def __set__(self, bool value):
+            parse_options_set_all_short_connectors(self._opts, value)
+        def __get__(self):
+            return parse_options_get_all_short_connectors(self._opts)
+
+    property repeatable_rand:
+        def __set__(self, bool value):
+            parse_options_set_repeatable_rand(self._opts, value)
+        def __get__(self):
+            return parse_options_get_repeatable_rand(self._opts)
+
+    property panic_mode:
+        def __set__(self, bool value):
+            self._panic_mode=value
+        def __get__(self):
+            return self._panic_mode
+
+    def reset_resources(self):
+        parse_options_reset_resources(self._opts)
+
+    def setup_abiword_main(self):
+        self.disjunct_cost=2.0
+        self.min_null_count=0
+        self.max_null_count=0
+        self.islands_ok=0
+        self.panic_mode=1
+        self.max_parse_time=1
+        self.reset_resources()
+
+    def setup_abiword_soft(self):
+
+        self.disjunct_cost=2.0
+        self.min_null_count=1
+        #
+        # We do not know the length of a sentence.
+        # parse_options_set_max_null_count(m_Opts, sentence_length(sent));
+        #
+        self.max_null_count=40
+        self.islands_ok=1
+        self.panic_mode=0
+        self.max_parse_time=1
+        self.reset_resources()
