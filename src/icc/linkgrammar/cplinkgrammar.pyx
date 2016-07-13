@@ -21,6 +21,13 @@ cdef extern from "Python.h":
     object PyObject_CallObject(object callable_object, object args)
     int PyObject_SetAttrString(object o, char *attr_name, object v)
 
+cdef extern from "signal.h":                # Used for debugging C seaside.
+    ctypedef unsigned int signal_t
+    void c_raise "raise" (signal_t signal)
+
+cdef enum:
+    SIGINT = 2
+
 cdef char * _s(o):
     return PyUnicode_AsUTF8(o)
 
@@ -143,13 +150,30 @@ cdef class LinkGrammar:
             raise RuntimeError("cannot create linkage")
         return rc
 
-    def diagram(self, num=None, bool display_walls=1, size_t screen_width=128):
-        cdef char * s
-        if num!=None:
+    cdef void _check_linkage(self) except *:
+        if self._linkage==NULL:
+            raise RuntimeError("create linkage first or set the first parameter "\
+                               "to a linkage number")
+
+    def check_linkage(self, num=None):
+        if type(num) == int:
             self.linkage(num)
+        self._check_linkage()
+
+    def diagram(self, num=None, bool display_walls=1, size_t screen_width=32767):
+        cdef char * s
+        self.check_linkage(num)
         s=linkage_print_diagram(self._linkage, display_walls, screen_width)
         u=_u(s)
         linkage_free_diagram(s)
+        return u
+
+    def pp_msgs(self, num=None):
+        cdef char * s
+        self.check_linkage(num)
+        s=linkage_print_pp_msgs(self._linkage)
+        u=_u(s)
+        linkage_free_pp_msgs(s)
         return u
 
     property linkage_limit:
