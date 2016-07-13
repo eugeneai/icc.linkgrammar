@@ -1,7 +1,7 @@
 .PHONY: env dev develop install test edit \
 	py pot init-ru update-ru comp-cat \
 	upd-cat setup test setup-requs tests \
-	run-tests gdb-test
+	run-tests gdb-test clean
 
 TOP_DIR="/home/eugeneai/Development/codes/NLP/workprog/tmp/link-grammar"
 
@@ -69,6 +69,10 @@ comp-cat:
 	$(PYTHON) setup.py compile_catalog -d $(LCAT)
 
 upd-cat: pot update-ru comp-cat
+
+clean:
+	$(PYTHON) setup.py clean
+	
 
 #adjust-ini:
 #	sed 's/HOME/\/home\/$(USER)/' icc.cellula.ini.in > icc.cellula.ini
