@@ -50,10 +50,6 @@ ext_modules=[
     Extension("icc.linkgrammar.cplinkgrammar",
               sources=["src/icc/linkgrammar/cplinkgrammar.pyx"],
               libraries=["link-grammar"],
-#              include_dirs = [LG_HEADERS],
-#              library_dirs = [LG_LIB_DIR],
-              # extra_link_args=['-static']
-#              extra_link_args = [os.path.join(LG_LIB_DIR,'liblink-grammar.a')]
     )
 ]
 
