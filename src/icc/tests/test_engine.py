@@ -59,11 +59,21 @@ class test_engine:
         assert self.p.linkage(0)
         assert self.p.linkage(1)
 
+
     def test_linkage_print_diagram(self):
-        self.p.parse("Я иду по улице.")
+        self.p.parse("Для выполнения поставленной цели решаются следующие задачи.")
         assert self.p.linkage(0)
         diag = self.p.diagram()
         print(diag)
+        assert diag
+
+    def test_linkage_print_postscript(self):
+        self.p.parse("Для выполнения поставленной цели решаются следующие задачи.")
+        assert self.p.linkage(0)
+        diag = self.p.postscript()
+        o=open("diagram.ps","w")
+        o.write(diag)
+        o.close()
         assert diag
 
     def text_linkage_set_option_parse_time(self):
@@ -83,3 +93,26 @@ class test_engine:
         self.p.verbosity = 1
         assert self.p.linkage(0)
         assert self.p.verbosity == 1
+
+
+
+
+class test_engine_en:
+    def setUp(self):
+        """
+        """
+        self.p = lg.LinkGrammar("en")
+
+    def tearDown(self):
+        self.p.clean()
+        del self.p
+
+
+    def test_linkage_print_postscript(self):
+        self.p.parse("Quick brown fox jumps over lazy dog.")
+        assert self.p.linkage(0)
+        diag = self.p.postscript()
+        o=open("diagram-en.ps","w")
+        o.write(diag)
+        o.close()
+        assert diag

@@ -176,6 +176,14 @@ cdef class LinkGrammar:
         linkage_free_pp_msgs(s)
         return u
 
+    def postscript(self, num=None, bool display_walls=1, ps_header=1):
+        cdef char * s;
+        self.check_linkage(num)
+        s=linkage_print_postscript(self._linkage, display_walls, ps_header)
+        u=_u(s)
+        linkage_free_postscript(s)
+        return u
+
     property linkage_limit:
         def __set__(self, int value):
             parse_options_set_linkage_limit(self._opts, value)
