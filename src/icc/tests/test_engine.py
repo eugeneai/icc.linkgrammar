@@ -1,4 +1,4 @@
-from nose.tools import *
+from nose.tools import raises
 
 import icc.linkgrammar as lg
 parser = lg.LinkGrammar("ru")
@@ -30,7 +30,7 @@ class test_engine:
         self.p.parse("Я живу.")
         assert self.p.num_linkages > 0
 
-    def test_num_linkages(self):
+    def test_num_linkages_2(self):
         self.p.parse("Я иду по улице.")
         assert self.p.num_linkages > 0
 
@@ -59,7 +59,6 @@ class test_engine:
         assert self.p.linkage(0)
         assert self.p.linkage(1)
 
-
     def test_linkage_print_diagram(self):
         self.p.parse("Для выполнения поставленной цели решаются следующие задачи.")
         assert self.p.linkage(0)
@@ -71,7 +70,7 @@ class test_engine:
         self.p.parse("Для выполнения поставленной цели решаются следующие задачи.")
         assert self.p.linkage(0)
         diag = self.p.postscript()
-        o=open("diagram.ps","w")
+        o = open("diagram.ps","w")
         o.write(diag)
         o.close()
         assert diag
@@ -95,8 +94,6 @@ class test_engine:
         assert self.p.verbosity == 1
 
 
-
-
 class test_engine_en:
     def setUp(self):
         """
@@ -107,12 +104,11 @@ class test_engine_en:
         self.p.clean()
         del self.p
 
-
     def test_linkage_print_postscript(self):
         self.p.parse("Quick brown fox jumps over the lazy dog.")
         assert self.p.linkage(0)
         diag = self.p.postscript()
-        o=open("diagram-en.ps","w")
+        o = open("diagram-en.ps", "w")
         o.write(diag)
         o.close()
         assert diag
