@@ -109,7 +109,7 @@ class test_engine_en:
 
 
     def test_linkage_print_postscript(self):
-        self.p.parse("Quick brown fox jumps over lazy dog.")
+        self.p.parse("Quick brown fox jumps over the lazy dog.")
         assert self.p.linkage(0)
         diag = self.p.postscript()
         o=open("diagram-en.ps","w")
