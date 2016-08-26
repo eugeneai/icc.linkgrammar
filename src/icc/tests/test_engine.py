@@ -1,6 +1,8 @@
 from nose.tools import raises
 
 import icc.linkgrammar as lg
+DATA_DIR="/home/eugeneai/Development/codes/NLP/link-grammar/data"
+lg.set_data_dir(DATA_DIR)
 parser = lg.LinkGrammar("ru")
 
 

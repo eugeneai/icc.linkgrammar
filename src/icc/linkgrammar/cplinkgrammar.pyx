@@ -37,6 +37,11 @@ cdef _u(const char * s):
     else:
         return u"<NULL>"
 
+def set_data_dir(dir_loc):
+    cdef char * s
+    s = _s(dir_loc)
+    dictionary_set_data_dir(s)
+
 cdef class LinkGrammar:
     """Represents link grammar.
     """
