@@ -3,7 +3,7 @@
 	upd-cat setup test setup-requs tests \
 	run-tests gdb-test clean
 
-TOP_DIR="/home/eugeneai/Development/codes/NLP/workprog/tmp/link-grammar"
+TOP_DIR="/home/eugeneai/Development/codes/NLP/link-grammar"
 
 LPYTHON=python3
 V=$(PWD)/../$(LPYTHON)
@@ -15,7 +15,7 @@ ROOT=$(PWD)
 
 LG_DIR="link-grammar"
 LG_LIB_DIR=$(TOP_DIR)/$(LG_DIR)/.libs
-LG_HEADERS=$(TOP_DIR)
+LG_HEADERS=$(TOP_DIR)/
 
 env:
 	[ -d $(V) ] || virtualenv  $(V)
